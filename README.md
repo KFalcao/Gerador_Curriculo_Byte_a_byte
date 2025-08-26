@@ -39,19 +39,6 @@ cv-builder-ai/
 │   ├── utils/                # Funções auxiliares (validação, processamento de texto)
 │   └── types/                # Definições de tipos e interfaces
 └── index.css                 # Estilos globais com Tailwind
----
-
-## 🧠 Conceitos Aplicados  
-
-- **React 19 + TypeScript** → Desenvolvimento de componentes reutilizáveis e tipados  
-- **TailwindCSS v4** → Estilização moderna e produtiva com layout Split-Screen (Form ↔ Preview)  
-- **Gerenciamento de estado com hooks** → `useCVData`, `useAIEnhancement`, `useToast`  
-- **Validação em tempo real** → Inputs controlados com feedback visual  
-- **Integração com APIs externas (OpenAI/Gemini)** → Comunicação assíncrona com `fetch` + `async/await`  
-- **UX aprimorada** → Preview instantâneo, loading spinners, skeleton screens e toasts  
-- **Tratamento de erros robusto** → Error boundaries, retries automáticos e mensagens amigáveis  
-- **Segurança** → Uso de variáveis de ambiente para API keys e validação segura de dados  
-- **Performance** → `useCallback`, debouncing de chamadas e lazy loading de componentes  
 
 ---
 
@@ -59,9 +46,9 @@ cv-builder-ai/
 
 ### Pré-requisitos
 
-- Um navegador moderno (Chrome, Firefox, Safari, Edge)
-- Editor de código (VS Code recomendado)
-- Git instalado na sua máquina
+- Um navegador moderno (Chrome, Firefox, Safari, Edge)  
+- Editor de código (VS Code recomendado)  
+- Git instalado na sua máquina  
 - Uma chave de API da [OpenAI](https://platform.openai.com/) ou do [Google AI Studio (Gemini)](https://aistudio.google.com/)
 
 ### 📋 Fluxo da Aplicação
@@ -73,6 +60,7 @@ cv-builder-ai/
 5. Visualiza o **preview do currículo em tempo real** no lado direito da tela  
 6. (Opcional) Clica nos botões de **IA ("Melhorar")** para aprimorar textos automaticamente  
 7. A aplicação exibe o texto atualizado no preview instantaneamente  
-8. (Opcional) O usuário pode exportar o currículo em **PDF profissional** (se implementado) 
+8. (Opcional) O usuário pode exportar o currículo em **PDF profissional** (se implementado)
 
 ---
+
