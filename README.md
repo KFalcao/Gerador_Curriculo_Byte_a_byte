@@ -40,6 +40,7 @@ cv-builder-ai/
 │   └── types/                # Definições de tipos e interfaces
 └── index.css                 # Estilos globais com Tailwind
 
+```
 ---
 
 ## ⚙️ Configuração e Uso
