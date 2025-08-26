@@ -21,9 +21,9 @@ Ao final do projeto, os participantes aprenderam a:
 
 ---
 
-## 📂 Estrutura do Projeto  
+## 📂 Estrutura do Projeto
 
-O projeto está estruturado de forma modular, priorizando organização e reutilização:  
+O projeto está estruturado de forma modular, priorizando organização e reutilização:
 
 ```bash
 cv-builder-ai/
