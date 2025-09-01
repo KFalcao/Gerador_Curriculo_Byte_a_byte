@@ -3,6 +3,20 @@
 
 :root {
   --font-family: "Montserrat", sans-serif;
+
+  /* Cores dos campos do formulário */
+  --form-title-color: #0a1f3c;
+  --form-field-bg-color: #f2f1ff;
+  --form-paragraph-color: #979797;
+
+  /* Cores do botão "Melhorar com IA" */
+  --button-ai-bg-color: #0a224a;
+  --button-ai-text-color: #ffffff;
+
+  /* Cores dos botões "Adicionar Habilidade/Experiência" */
+  --button-add-skill-bg-color: #ffffff;
+  --button-add-skill-border-color: #0a224a;
+  --button-add-skill-text-color: #0a224a;
 }
 
 body {
