@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 
-export default function Cols() {
+export default function ResumeForm({
+  onResumoChange,
+}: {
+  onResumoChange: (value: string) => void;
+}) {
   const [resumo, setResumo] = useState("");
+
+  const handleResumoChange = (value: string) => {
+    setResumo(value);
+    onResumoChange(value);
+  };
 
   return (
     <>
-
       <div className="bg-blue-500 min-h-screen flex items-start justify-center p-8">
         <div className="w-full max-w-md text-white">
           <h2 className="text-2xl font-semibold mb-6 text-center">
@@ -13,7 +21,6 @@ export default function Cols() {
           </h2>
 
           <form className="flex flex-col gap-4">
-
             <div>
               <label className="block mb-1 text-sm">Nome</label>
               <input
@@ -56,7 +63,7 @@ export default function Cols() {
                 rows={4}
                 placeholder="Digite um breve resumo"
                 value={resumo}
-                onChange={(e) => setResumo(e.target.value)}
+                onChange={(e) => handleResumoChange(e.target.value)}
                 maxLength={500}
                 className="w-full px-3 py-2 rounded-md text-black"
               />
@@ -66,10 +73,6 @@ export default function Cols() {
             </div>
           </form>
         </div>
-      </div>
-
-      <div className="bg-green-500 min-h-screen flex items-center justify-center">
-        <p className="text-white text-xl">Preview</p>
       </div>
     </>
   );
