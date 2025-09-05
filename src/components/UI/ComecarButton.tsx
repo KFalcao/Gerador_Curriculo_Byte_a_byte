@@ -16,12 +16,12 @@ export default function ComecarButton({
         cursor-pointer 
         text-white 
         px-4 py-2 
-        border border-blue-200 
+        border 
         rounded-lg 
         mt-10
         transition-all duration-300 ease-in-out
-        hover:scale-105 hover:text-blue-300 hover:border-blue-300
-        active:scale-110 active:text-blue-400 active:border-blue-400"
+        hover:scale-105 hover:text-indigo-300 hover:border-indigo-300
+        active:scale-110 active:text-indigo-400 active:border-indigo-400"
     >
       {children}
     </button>

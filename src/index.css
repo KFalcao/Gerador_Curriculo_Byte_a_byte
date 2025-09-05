@@ -5,8 +5,9 @@
   --font-family: "Montserrat", sans-serif;
 
   /* Cores dos campos do formulário */
-  --form-title-color: #0a1f3c;
+  --form-text-color: #0a1f3c;
   --form-field-bg-color: #f2f1ff;
+  --form-field-border-color: #0a224a;
   --form-paragraph-color: #979797;
 
   /* Cores do botão "Melhorar com IA" */
