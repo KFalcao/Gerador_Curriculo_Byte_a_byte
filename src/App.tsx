@@ -1,11 +1,49 @@
 import { useState } from "react";
 import Columns from "./components/Layout/Columns";
-import ResumeForm from "./components/Form/ResumeForm";
 import Hero from "./components/Hero";
 import ResumePreview from "./components/Preview/ResumePreview";
+import ExperienceForm from "./components/Form/ExperienceForm";
+import type { Experience } from "./components/Form/ExperienceForm";
+import PersonalData from "./components/Form/PersonalData";
+import type { Personal } from "./components/Form/PersonalData";
+
+const initialPersonalState: Personal = {
+  name: "",
+  email: "",
+  phone: "",
+  linkedin: "",
+  summary: "",
+};
+
+const initialExperienceState: Experience = {
+  company: "",
+  role: "",
+  startDate: "",
+  endDate: "",
+  description: "",
+  currentJob: false,
+};
 
 export default function App() {
-  const [resumo, setResumo] = useState("");
+  const [personalData, setPersonalData] =
+    useState<PersonalData>(initialPersonalState);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [currentFormData, setCurrentFormData] = useState<Experience>(
+    initialExperienceState
+  );
+
+  const handlePersonalDataChange = (newPersonalData: Personal) => {
+    setPersonalData(newPersonalData);
+  };
+
+  const handleExperiencesChange = (newExperiences: Experience[]) => {
+    setExperiences(newExperiences);
+  };
+
+  const handleFormChange = (formData: Experience) => {
+    setCurrentFormData(formData);
+  };
+
   return (
     <div
       className="w-screen min-h-screen flex flex-col"
@@ -14,14 +52,34 @@ export default function App() {
       }}
     >
       <Hero />
-
       <section
         id="formulario"
         className="w-full min-h-screen px-6 py-16 flex justify-center items-start"
       >
         <Columns>
-          <ResumeForm onResumoChange={setResumo} />
-          <ResumePreview />
+          <div className="bg-white min-h-screen flex items-start justify-center p-8 rounded-md">
+            <div className="w-full max-w-md text-(--form-text-color)">
+              <PersonalData
+                personalData={personalData}
+                onChange={handlePersonalDataChange}
+                onFormChange={handlePersonalDataChange}
+              />
+              <ExperienceForm
+                experiences={experiences}
+                onChange={handleExperiencesChange}
+                onFormChange={handleFormChange}
+                formData={currentFormData}
+              />
+            </div>
+          </div>
+
+          <div className="lg:sticky lg:top-8 lg:self-start">
+            <ResumePreview
+              personalData={personalData}
+              experiences={experiences}
+              currentFormData={currentFormData}
+            />
+          </div>
         </Columns>
       </section>
     </div>
