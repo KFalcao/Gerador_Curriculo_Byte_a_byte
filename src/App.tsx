@@ -1,11 +1,12 @@
 import { useState } from "react";
-import Columns from "./components/Layout/Columns";
-import Hero from "./components/Hero";
-import ResumePreview from "./components/Preview/ResumePreview";
-import ExperienceForm from "./components/Form/ExperienceForm";
 import type { Experience } from "./components/Form/ExperienceForm";
-import PersonalData from "./components/Form/PersonalData";
+import ExperienceForm from "./components/Form/ExperienceForm";
 import type { Personal } from "./components/Form/PersonalData";
+import PersonalData from "./components/Form/PersonalData";
+import Hero from "./components/Hero";
+import Columns from "./components/Layout/Columns";
+import Header from "./components/Layout/Header";
+import ResumePreview from "./components/Preview/ResumePreview";
 
 const initialPersonalState: Personal = {
   name: "",
@@ -32,6 +33,8 @@ export default function App() {
     initialExperienceState
   );
 
+  const [apiKey, setApiKey] = useState<string | null>(null);
+
   const handlePersonalDataChange = (newPersonalData: Personal) => {
     setPersonalData(newPersonalData);
   };
@@ -51,11 +54,14 @@ export default function App() {
         background: `linear-gradient(180deg, #0A2248 0%, #0B2249 50%, #0A224A 75%, #092148 88%, #0A1F3C 100%)`,
       }}
     >
+      
       <Hero />
-      <section
-        id="formulario"
-        className="w-full min-h-screen px-6 py-16 flex justify-center items-start"
-      >
+
+      <section id="header"></section>
+      <Header onApiKeyChange={setApiKey} />
+
+      <section id="formulario" className="w-full min-h-screen px-6 py-16 flex justify-center items-start">
+        
         <Columns>
           <div className="bg-white min-h-screen flex items-start justify-center p-8 rounded-md">
             <div className="w-full max-w-md text-(--form-text-color)">
@@ -63,6 +69,8 @@ export default function App() {
                 personalData={personalData}
                 onChange={handlePersonalDataChange}
                 onFormChange={handlePersonalDataChange}
+                aiActive={!!apiKey}
+                apiKey={apiKey}
               />
               <ExperienceForm
                 experiences={experiences}

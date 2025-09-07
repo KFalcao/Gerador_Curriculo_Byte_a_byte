@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FiZap } from "react-icons/fi";
+import { improveSummaryOpenAI } from "../../services/OpenIA/Openia";
 
 export interface Personal {
   name: string;
@@ -12,6 +14,8 @@ interface PersonalFormProps {
   personalData: Personal;
   onChange: (personal: Personal) => void;
   onFormChange: (formData: Personal) => void;
+  aiActive: boolean; // habilita IA
+  apiKey: string | null; // chave OpenAI
 }
 
 const initialPersonalState: Personal = {
@@ -26,8 +30,12 @@ export default function PersonalData({
   personalData,
   onChange,
   onFormChange,
+  aiActive,
+  apiKey,
 }: PersonalFormProps) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false);
+  const [summaryMessage, setSummaryMessage] = useState<string | null>(null);
 
   function validateField(name: string, value: string, data = personalData) {
     switch (name) {
@@ -78,28 +86,37 @@ export default function PersonalData({
   }
 
   function setField(name: string, value: string) {
-    let next = {
-      ...personalData,
-      [name]: value,
-    };
-
+    const next = { ...personalData, [name]: value };
     onFormChange(next);
 
     setErrors((prev) => {
       const fieldError = validateField(name, value, next);
       const merged = { ...prev, [name]: fieldError };
-      Object.keys(merged).forEach(
-        (k) => merged[k] === undefined && delete merged[k]
-      );
+      Object.keys(merged).forEach((k) => merged[k] === undefined && delete merged[k]);
       return merged;
     });
   }
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setField(name, value);
+  }
+
+  async function handleImproveSummary() {
+    if (!personalData.summary.trim() || !apiKey) return;
+
+    setLoading(true);
+    setSummaryMessage(null);
+
+    try {
+      const improved = await improveSummaryOpenAI(apiKey, personalData.summary);
+      setField("summary", improved);
+      setSummaryMessage("Resumo melhorado com sucesso!");
+    } catch (err) {
+      setSummaryMessage("Falha ao melhorar resumo.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -136,12 +153,11 @@ export default function PersonalData({
                   className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
                 />
                 {errors.name && (
-                  <span className="text-red-500 mt-3 text-left">
-                    {errors.name}
-                  </span>
+                  <span className="text-red-500 mt-3 text-left">{errors.name}</span>
                 )}
               </div>
             </div>
+
             <div className="col-span-full">
               <label
                 htmlFor="email"
@@ -161,12 +177,11 @@ export default function PersonalData({
                   className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
                 />
                 {errors.email && (
-                  <span className="text-red-500 mt-3 text-left">
-                    {errors.email}
-                  </span>
+                  <span className="text-red-500 mt-3 text-left">{errors.email}</span>
                 )}
               </div>
             </div>
+
             <div className="sm:col-span-3">
               <label
                 htmlFor="phone"
@@ -186,12 +201,11 @@ export default function PersonalData({
                   className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
                 />
                 {errors.phone && (
-                  <span className="text-red-500 mt-3 text-left">
-                    {errors.phone}
-                  </span>
+                  <span className="text-red-500 mt-3 text-left">{errors.phone}</span>
                 )}
               </div>
             </div>
+
             <div className="sm:col-span-3">
               <label
                 htmlFor="linkedin"
@@ -217,12 +231,11 @@ export default function PersonalData({
                   />
                 </div>
                 {errors.linkedin && (
-                  <span className="text-red-500 mt-3 text-left">
-                    {errors.linkedin}
-                  </span>
+                  <span className="text-red-500 mt-3 text-left">{errors.linkedin}</span>
                 )}
               </div>
             </div>
+
             <div className="col-span-full">
               <label
                 htmlFor="summary"
@@ -241,17 +254,31 @@ export default function PersonalData({
                     rows={4}
                     className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                   />
-                  <p className="text-right text-xs mt-1">
-                    {(personalData.summary || "").length} / 500 caracteres
-                  </p>
+                  <div className="flex justify-between items-center text-xs mt-1 relative">
+                    <span>{(personalData.summary || "").length} / 500 caracteres</span>
+
+                    {aiActive && (
+                      <button
+                        type="button"
+                        onClick={handleImproveSummary}
+                        disabled={loading}
+                        className="flex items-center gap-1 rounded-md bg-indigo-500 hover:bg-indigo-700 text-white px-6 py-1 text-xs font-medium shadow-md transition"
+                      >
+                        <FiZap size={14} />
+                        {loading ? "Aguarde..." : "Melhorar com IA"}
+                      </button>
+                    )}
+                  </div>
                 </div>
+                {summaryMessage && (
+                  <span className="text-indigo-700 mt-1 block">{summaryMessage}</span>
+                )}
                 {errors.summary && (
-                  <span className="text-red-500 mt-3 text-left">
-                    {errors.summary}
-                  </span>
+                  <span className="text-red-500 mt-3 text-left">{errors.summary}</span>
                 )}
               </div>
             </div>
+
           </div>
         </div>
       </div>

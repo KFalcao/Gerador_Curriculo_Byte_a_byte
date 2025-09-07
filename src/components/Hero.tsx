@@ -1,4 +1,3 @@
-import React from "react";
 import Particles from "./Particles";
 import ComecarButton from "./UI/ComecarButton";
 
@@ -24,7 +23,7 @@ export default function Hero() {
         </p>
         <ComecarButton
           onClick={() => {
-            const form = document.getElementById("formulario");
+            const form = document.getElementById("header");
             form?.scrollIntoView({ behavior: "smooth" });
           }}
         >
