@@ -202,7 +202,7 @@ export default function PersonalData({
               <div className="mt-2">
                 <div className="flex items-center rounded-md bg-(--form-field-bg-color) pl-3">
                   <div className="shrink-0 text-base text-gray-400 select-none sm:text-sm/6">
-                    linkedin.com/
+                    linkedin.com/in/
                   </div>
                   <input
                     id="linkedin"
