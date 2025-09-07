@@ -32,6 +32,7 @@ export default function ExperienceForm({
   formData,
 }: ExperienceFormProps) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isAdding, setIsAdding] = useState(false); //mudei aqui
 
   function validateField(
     name: string,
@@ -129,11 +130,13 @@ export default function ExperienceForm({
     onChange([...experiences, formData]);
     onFormChange(initialExperienceState);
     setErrors({});
+    setIsAdding(false); //mudei aqui
   }
   
   function handleCancel() {
   onFormChange(initialExperienceState); // limpa os campos
   setErrors({}); // limpa erros
+  setIsAdding(false); //mudei aqui
   }
   const canAdd = validateForm().isValid;
 
@@ -146,274 +149,291 @@ export default function ExperienceForm({
             Informe detalhes de suas experiências profissionais
           </p>
 
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="company"
-                className="block text-sm/6 font-medium text-(--form-text-color)"
-              >
-                Empresa *
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  aria-required="true"
-                  aria-invalid={!!errors.company}
-                  className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
-                />
-                {errors.company && (
-                  <span className="text-red-500 mt-3 animate-pulse text-left">
-                    {errors.company}
-                  </span>
-                )}
-              </div>
-            </div>
+          {/* ALTERAÇÃO: botão que abre o formulário */}
+          {!isAdding && (
+            <button
+              type="button"
+              onClick={() => setIsAdding(true)}
+              className="mt-4 rounded-md bg-[var(--button-add-skill-bg-color)] border border-[var(--button-add-skill-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105"
+            >
+              + Adicionar experiência
+            </button>
+          )}
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="role"
-                className="block text-sm/6 font-medium text-(--form-text-color)"
-              >
-                Cargo *
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  id="role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  aria-required="true"
-                  aria-invalid={!!errors.role}
-                  className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
-                />
-                {errors.role && (
-                  <span className="text-red-500 mt-3 animate-pulse text-left">
-                    {errors.role}
-                  </span>
-                )}
+{/* ALTERAÇÃO: o form agora fica dentro desta condicional */}
+          {isAdding && (
+            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              {/* Empresa */}
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="company"
+                  className="block text-sm/6 font-medium text-(--form-text-color)"
+                >
+                  Empresa *
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!errors.company}
+                    className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
+                  />
+                  {errors.company && (
+                    <span className="text-red-500 mt-3 animate-pulse text-left">
+                      {errors.company}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="startDate"
-                className="block text-sm/6 font-medium text-(--form-text-color)"
-              >
-                Início *
-              </label>
-              <div className="mt-2">
-                <input
-                  type="date"
-                  id="startDate"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleChange}
-                  aria-required="true"
-                  aria-invalid={!!errors.startDate}
-                  className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
-                />
-                {errors.startDate && (
-                  <span className="text-red-500 mt-3 animate-pulse text-left">
-                    {errors.startDate}
-                  </span>
-                )}
+              {/* Cargo */}
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="role"
+                  className="block text-sm/6 font-medium text-(--form-text-color)"
+                >
+                  Cargo/Função *
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    id="role"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!errors.role}
+                    className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
+                  />
+                  {errors.role && (
+                    <span className="text-red-500 mt-3 animate-pulse text-left">
+                      {errors.role}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="endDate"
-                className="block text-sm/6 font-medium text-(--form-text-color)"
-              >
-                Fim
-              </label>
-              <div className="mt-2">
-                <input
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  value={formData.endDate}
-                  onChange={handleChange}
-                  disabled={formData.currentJob}
-                  aria-invalid={!!errors.endDate}
-                  className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
-                  min={formData.startDate || undefined}
-                />
-                {errors.endDate && (
-                  <span className="text-red-500 mt-3 animate-pulse text-left">
-                    {errors.endDate}
-                  </span>
-                )}
+              {/* Data de Início */}
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="startDate"
+                  className="block text-sm/6 font-medium text-(--form-text-color)"
+                >
+                  Início *
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="date"
+                    id="startDate"
+                    name="startDate"
+                    value={formData.startDate}
+                    onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!errors.startDate}
+                    className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
+                  />
+                  {errors.startDate && (
+                    <span className="text-red-500 mt-3 animate-pulse text-left">
+                      {errors.startDate}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="col-span-full">
-              <label
-                htmlFor="description"
-                className="block text-sm/6 font-medium text-(--form-text-color)"
-              >
-                Descrição
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="description"
-                  name="description"
-                  aria-describedby="descriptionHelp"
-                  value={formData.description}
-                  onChange={handleChange}
-                  rows={3}
-                  className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                />
+              {/* Data de Fim */}
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="endDate"
+                  className="block text-sm/6 font-medium text-(--form-text-color)"
+                >
+                  Fim
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="date"
+                    id="endDate"
+                    name="endDate"
+                    value={formData.endDate}
+                    onChange={handleChange}
+                    disabled={formData.currentJob}
+                    aria-invalid={!!errors.endDate}
+                    className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-(--form-field-border-color) sm:text-sm/6"
+                    min={formData.startDate || undefined}
+                  />
+                  {errors.endDate && (
+                    <span className="text-red-500 mt-3 animate-pulse text-left">
+                      {errors.endDate}
+                    </span>
+                  )}
+                </div>
               </div>
-              <p
-                id="descriptionHelp"
-                className="mt-3 text-sm/6 text-(--form-paragraph-color)"
-              >
-                Descreva as atividades exercidas.
-              </p>
-            </div>
 
-            <div className="mt-2 col-span-full">
-              <div className="flex gap-3">
-                <div className="flex h-6 shrink-0 items-center">
-                  <div className="group grid size-4 grid-cols-1">
-                    <input
-                      id="currentJob"
-                      name="currentJob"
-                      type="checkbox"
-                      checked={formData.currentJob}
-                      onChange={handleCheckboxChange}
-                      disabled={!!formData.endDate}
-                      aria-invalid={!!errors.currentJob}
-                      className="col-start-1 row-start-1 appearance-none rounded-sm border border-(--button-add-skill-border-color) bg-(--form-field-bg-color) checked:border-indigo-500 checked:bg-indigo-500 indeterminate:border-indigo-500 indeterminate:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-(--form-field-bg-color) disabled:bg-(--form-field-bg-color) disabled:checked:bg-(--form-field-bg-color) forced-colors:appearance-auto"
-                    />
-                    <svg
-                      fill="none"
-                      viewBox="0 0 14 14"
-                      className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-white/25"
-                    >
-                      <path
-                        d="M3 8L6 11L11 3.5"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="opacity-0 group-has-checked:opacity-100"
+              {/* Descrição */}
+              <div className="col-span-full">
+                <label
+                  htmlFor="description"
+                  className="block text-sm/6 font-medium text-(--form-text-color)"
+                >
+                  Descrição
+                </label>
+                <div className="mt-2">
+                  <textarea
+                    id="description"
+                    name="description"
+                    aria-describedby="descriptionHelp"
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows={3}
+                    className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                  />
+                </div>
+                <p
+                  id="descriptionHelp"
+                  className="mt-3 text-sm/6 text-(--form-paragraph-color)"
+                >
+                  Descreva as atividades exercidas.
+                </p>
+              </div>
+
+              {/* Trabalho atual (checkbox) */}
+              <div className="mt-2 col-span-full">
+                <div className="flex gap-3">
+                  <div className="flex h-6 shrink-0 items-center">
+                    <div className="group grid size-4 grid-cols-1">
+                      <input
+                        id="currentJob"
+                        name="currentJob"
+                        type="checkbox"
+                        checked={formData.currentJob}
+                        onChange={handleCheckboxChange}
+                        disabled={!!formData.endDate}
+                        aria-invalid={!!errors.currentJob}
+                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-(--button-add-skill-border-color) bg-(--form-field-bg-color) checked:border-indigo-500 checked:bg-indigo-500 indeterminate:border-indigo-500 indeterminate:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-(--form-field-bg-color) disabled:bg-(--form-field-bg-color) disabled:checked:bg-(--form-field-bg-color) forced-colors:appearance-auto"
                       />
-                      <path
-                        d="M3 7H11"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="opacity-0 group-has-indeterminate:opacity-100"
-                      />
-                    </svg>
+                      <svg
+                        fill="none"
+                        viewBox="0 0 14 14"
+                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-white/25"
+                      >
+                        <path
+                          d="M3 8L6 11L11 3.5"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="opacity-0 group-has-checked:opacity-100"
+                        />
+                        <path
+                          d="M3 7H11"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="opacity-0 group-has-indeterminate:opacity-100"
+                        />
+                      </svg>
+                    </div>
                   </div>
+                  <div className="text-sm/6 flex-1">
+                    <label
+                      htmlFor="currentJob"
+                      className="inline-block font-medium text-(--form-text-color)"
+                    >
+                      Trabalho atual
+                    </label>
+                  </div>
+                  {errors.currentJob && (
+                    <span className="text-red-500 mt-3 animate-pulse text-left">
+                      {errors.currentJob}
+                    </span>
+                  )}
                 </div>
-                <div className="text-sm/6 flex-1">
-                  <label
-                    htmlFor="currentJob"
-                    className="inline-block font-medium text-(--form-text-color)"
-                  >
-                    Trabalho atual
-                  </label>
-                </div>
-                {errors.currentJob && (
-                  <span className="text-red-500 mt-3 animate-pulse text-left">
-                    {errors.currentJob}
-                  </span>
-                )}
+              </div>
+
+              {/* Botões Salvar / Cancelar*/}
+              <div className="mt-2 gap-x-6 col-span-full flex gap-3">
+                <button
+                  type="button"
+                  onClick={handleAdd}
+                  disabled={!canAdd}
+                  className="rounded-md bg-[var(--button-add-skill-bg-color)] border border-[var(--button-add-skill-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105 disabled:opacity-50"
+                  title={
+                    !canAdd
+                      ? "Verifique suas informações antes de adicionar"
+                      : "Adicionar experiência"
+                  }
+                >
+                  Salvar
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="rounded-md bg-[var(--button-cancel-bg-color)] border border-[var(--button-cancel-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105"
+                >
+                  Cancelar
+                </button>
               </div>
             </div>
+          )}
 
-<div className="mt-2 gap-x-6 col-span-full flex gap-3">
-  {/* Botão Adicionar */}
-  <button
-    type="button"
-    onClick={handleAdd}
-    disabled={!canAdd}
-    className="rounded-md bg-[var(--button-add-skill-bg-color)] border border-[var(--button-add-skill-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105 disabled:opacity-50"
-    title={
-      !canAdd
-        ? 'Verifique suas informações antes de adicionar'
-        : 'Adicionar experiência'
-    }
-  >
-    + Adicionar
-  </button>
-
-  {/* Botão Cancelar */}
-  <button
-    type="button"
-    onClick={handleCancel}
-    className="rounded-md bg-[var(--button-cancel-bg-color)] border border-[var(--button-cancel-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105"
-  >
-    Cancelar
-  </button>
-</div>
-
-{/* Lista de exp já add */}
-<div className="mt-6 space-y-4 col-span-full">
-  {experiences.map((exp, index) => (
-    <div
-      key={index}
-      className="w-full flex items-start justify-between gap-4 p-4 rounded-lg shadow-sm
+          {/* Lista de exp add */}
+          <div className="mt-6 space-y-4 col-span-full">
+            {experiences.map((exp, index) => (
+              <div
+                key={index}
+                className="w-full flex items-start justify-between gap-4 p-4 rounded-lg shadow-sm
                  border border-[var(--button-add-skill-border-color)]
                  bg-[var(--form-field-bg-color)]"
-    >
-      {/* Texto */}
-      <div className="flex-1 min-w-0 text-left">
-        <p className="font-semibold text-[var(--form-text-color)] break-words">
-          {exp.role}
-        </p>
-        <p className="text-sm text-[var(--form-label-color)] break-words">
-          {exp.company}
-        </p>
-        <p className="text-xs text-gray-500">
-          {exp.startDate} → {exp.currentJob ? "Atual" : exp.endDate || "—"}
-        </p>
-        {exp.description && (
-          <p className="mt-1 text-sm text-[var(--form-text-color)] break-words">
-            {exp.description}
-          </p>
-        )}
-      </div>
+              >
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="font-semibold text-[var(--form-text-color)] break-words">
+                    {exp.role}
+                  </p>
+                  <p className="text-sm text-[var(--form-label-color)] break-words">
+                    {exp.company}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {exp.startDate} → {exp.currentJob ? "Atual" : exp.endDate || "—"}
+                  </p>
+                  {exp.description && (
+                    <p className="mt-1 text-sm text-[var(--form-text-color)] break-words">
+                      {exp.description}
+                    </p>
+                  )}
+                </div>
 
-      {/* Botão Remover*/}
-      <button
-        type="button"
-        onClick={() => onChange(experiences.filter((_, i) => i !== index))}
-        className="shrink-0 p-2 rounded-md text-[var(--form-text-color)]
-                   hover:text-red-600 hover:bg-red-50/60 transition-colors
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-        title="Excluir experiência"
-        aria-label="Excluir experiência"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="w-5 h-5"
-        >
-          <path d="M3 6h18" />
-          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-          <line x1="10" y1="11" x2="10" y2="17" />
-          <line x1="14" y1="11" x2="14" y2="17" />
-        </svg>
-      </button>
-    </div>
-  ))}
-</div>
+                <button
+                  type="button"
+                  onClick={() => onChange(experiences.filter((_, i) => i !== index))}
+                  className="shrink-0 p-2 rounded-md text-[var(--form-text-color)]
+                   hover:text-red-600 hover:bg-red-50/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  title="Excluir experiência"
+                  aria-label="Excluir experiência"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                  >
+                    <path d="M3 6h18" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
+                  </svg>
+                </button>
+              </div>
+            ))}
           </div>
+
         </div>
       </div>
     </form>
