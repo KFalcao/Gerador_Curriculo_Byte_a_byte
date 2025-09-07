@@ -130,7 +130,11 @@ export default function ExperienceForm({
     onFormChange(initialExperienceState);
     setErrors({});
   }
-
+  
+  function handleCancel() {
+  onFormChange(initialExperienceState); // limpa os campos
+  setErrors({}); // limpa erros
+  }
   const canAdd = validateForm().isValid;
 
   return (
@@ -326,21 +330,89 @@ export default function ExperienceForm({
               </div>
             </div>
 
-            <div className="mt-2 gap-x-6 col-span-full border-(--form-text-color)">
-              <button
-                type="button"
-                onClick={handleAdd}
-                disabled={!canAdd}
-                className="rounded-md bg-(--button-add-skill-bg-color) border border-(--button-add-skill-border-color) px-3 py-2 text-sm/6 font-semibold text-(--form-text-color) hover:scale-101"
-                title={
-                  !canAdd
-                    ? "Verifique suas informações antes de adicionar"
-                    : "Experiência adicionada"
-                }
-              >
-                + Adicionar Experiência
-              </button>
-            </div>
+<div className="mt-2 gap-x-6 col-span-full flex gap-3">
+  {/* Botão Adicionar */}
+  <button
+    type="button"
+    onClick={handleAdd}
+    disabled={!canAdd}
+    className="rounded-md bg-[var(--button-add-skill-bg-color)] border border-[var(--button-add-skill-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105 disabled:opacity-50"
+    title={
+      !canAdd
+        ? 'Verifique suas informações antes de adicionar'
+        : 'Adicionar experiência'
+    }
+  >
+    + Adicionar
+  </button>
+
+  {/* Botão Cancelar */}
+  <button
+    type="button"
+    onClick={handleCancel}
+    className="rounded-md bg-[var(--button-cancel-bg-color)] border border-[var(--button-cancel-border-color)] px-3 py-2 text-sm font-semibold text-[var(--form-text-color)] hover:scale-105"
+  >
+    Cancelar
+  </button>
+</div>
+
+{/* Lista de exp já add */}
+<div className="mt-6 space-y-4 col-span-full">
+  {experiences.map((exp, index) => (
+    <div
+      key={index}
+      className="w-full flex items-start justify-between gap-4 p-4 rounded-lg shadow-sm
+                 border border-[var(--button-add-skill-border-color)]
+                 bg-[var(--form-field-bg-color)]"
+    >
+      {/* Texto */}
+      <div className="flex-1 min-w-0 text-left">
+        <p className="font-semibold text-[var(--form-text-color)] break-words">
+          {exp.role}
+        </p>
+        <p className="text-sm text-[var(--form-label-color)] break-words">
+          {exp.company}
+        </p>
+        <p className="text-xs text-gray-500">
+          {exp.startDate} → {exp.currentJob ? "Atual" : exp.endDate || "—"}
+        </p>
+        {exp.description && (
+          <p className="mt-1 text-sm text-[var(--form-text-color)] break-words">
+            {exp.description}
+          </p>
+        )}
+      </div>
+
+      {/* Botão Remover*/}
+      <button
+        type="button"
+        onClick={() => onChange(experiences.filter((_, i) => i !== index))}
+        className="shrink-0 p-2 rounded-md text-[var(--form-text-color)]
+                   hover:text-red-600 hover:bg-red-50/60 transition-colors
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+        title="Excluir experiência"
+        aria-label="Excluir experiência"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5"
+        >
+          <path d="M3 6h18" />
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          <line x1="10" y1="11" x2="10" y2="17" />
+          <line x1="14" y1="11" x2="14" y2="17" />
+        </svg>
+      </button>
+    </div>
+  ))}
+</div>
           </div>
         </div>
       </div>
