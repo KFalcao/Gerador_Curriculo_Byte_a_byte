@@ -6,6 +6,12 @@ import ExperienceForm from "./components/Form/ExperienceForm";
 import type { Experience } from "./components/Form/ExperienceForm";
 import PersonalData from "./components/Form/PersonalData";
 import type { Personal } from "./components/Form/PersonalData";
+import SkillsForm from "./components/Form/SkillsForm";
+
+type Skill = {
+  name: string;
+  level: string;
+};
 
 const initialPersonalState: Personal = {
   name: "",
@@ -14,6 +20,8 @@ const initialPersonalState: Personal = {
   linkedin: "",
   summary: "",
 };
+
+
 
 const initialExperienceState: Experience = {
   company: "",
@@ -27,6 +35,7 @@ const initialExperienceState: Experience = {
 export default function App() {
   const [personalData, setPersonalData] =
     useState<PersonalData>(initialPersonalState);
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [currentFormData, setCurrentFormData] = useState<Experience>(
     initialExperienceState
@@ -64,6 +73,7 @@ export default function App() {
                 onChange={handlePersonalDataChange}
                 onFormChange={handlePersonalDataChange}
               />
+              <SkillsForm skills={skills} setSkills={setSkills} />
               <ExperienceForm
                 experiences={experiences}
                 onChange={handleExperiencesChange}
@@ -76,6 +86,7 @@ export default function App() {
           <div className="lg:sticky lg:top-8 lg:self-start">
             <ResumePreview
               personalData={personalData}
+              skills={skills}
               experiences={experiences}
               currentFormData={currentFormData}
             />
