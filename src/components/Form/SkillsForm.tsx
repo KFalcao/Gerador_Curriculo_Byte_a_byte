@@ -41,10 +41,8 @@ export default function SkillsForm({ skills, setSkills }: SkillsFormProps) {
 
   return (
     <div className="my-6">
-      <h2 className="text-xl font-semibold flex items-center gap-2">
-        <span>🛠️</span> Habilidades
-      </h2>
-      <p className="text-sm text-gray-500">
+      <h2 className="text-xl font-semibold flex items-center gap-2">Habilidades</h2>
+      <p className="text-sm text-gray-500 py-6">
         Adicione suas principais competências técnicas
       </p>
 

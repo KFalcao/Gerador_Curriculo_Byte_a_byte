@@ -176,7 +176,7 @@ export default function PersonalData({
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
+                  type="number"
                   id="phone"
                   name="phone"
                   value={personalData.phone}
@@ -201,19 +201,16 @@ export default function PersonalData({
               </label>
               <div className="mt-2">
                 <div className="flex items-center rounded-md bg-(--form-field-bg-color) pl-3">
-                  <div className="shrink-0 text-base text-gray-400 select-none sm:text-sm/6">
-                    linkedin.com/
-                  </div>
                   <input
                     id="linkedin"
                     name="linkedin"
                     type="text"
-                    placeholder="seu-nome"
+                    placeholder="https://www.linkedin.com/in/username/"
                     value={personalData.linkedin}
                     onChange={handleChange}
                     aria-required="true"
                     aria-invalid={!!errors.linkedin}
-                    className="block w-full rounded-md bg-(--form-field-bg-color) px-3 py-1.5 text-base text-(--form-text-color) focus:outline-none sm:text-sm/6"
+                    className="block w-full rounded-md bg-(--form-field-bg-color) py-1.5 text-base text-(--form-text-color) focus:outline-none sm:text-sm/6"
                   />
                 </div>
                 {errors.linkedin && (
